@@ -43,7 +43,11 @@ export class UserService {
   }
 
   async findByEmail(email: string) {
-    return await this.userRepository.findOneBy({ email });
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .where('user.email = :email', { email })
+      .getOne();
   }
 
   async findById(id: number) {
@@ -67,7 +71,11 @@ export class UserService {
     if (!existingUser) {
       throw new NotFoundException('등록되지 않은 이메일입니다.');
     }
-    if (!(await compare(password, existingUser.password))) {
+    if (!existingUser.password) {
+      throw new UnauthorizedException('비밀번호가 설정되지 않았습니다.');
+    }
+    const passwordMatch = await compare(password, existingUser.password);
+    if (!passwordMatch) {
       throw new UnauthorizedException('입력하신 비밀번호가 일치하지 않습니다.');
     }
     const payload = { email, sub: existingUser.id }; //걍sub으로함
