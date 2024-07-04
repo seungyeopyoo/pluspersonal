@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ConcertDateService } from './concert_date.service';
 import { CreateConcertDateDto } from './dto/create-concert_date.dto';
 import { UpdateConcertDateDto } from './dto/update-concert_date.dto';
@@ -23,7 +31,10 @@ export class ConcertDateController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateConcertDateDto: UpdateConcertDateDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateConcertDateDto: UpdateConcertDateDto,
+  ) {
     return this.concertDateService.update(+id, updateConcertDateDto);
   }
 

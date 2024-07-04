@@ -46,8 +46,18 @@ export class UserService {
     return await this.userRepository.findOneBy({ email });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findById(id: number) {
+    const user = await this.userRepository.findOneBy({ id });
+
+    if (!user) {
+      throw new NotFoundException('사용자를 찾을 수 없습니다.');
+    }
+
+    // 닉네임과 포인트를 반환
+    return {
+      nickname: user.nickname,
+      points: user.points,
+    };
   }
 
   async signIn(loginDto: LoginDto) {
