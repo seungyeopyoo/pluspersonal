@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  Index,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 import { Category } from '../types/concertCategory.type';
 
@@ -17,7 +10,7 @@ export class Concert {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'int', unique: true, nullable: false })
+  @Column({ type: 'int', nullable: false })
   admin_id: number;
 
   @Column({ type: 'varchar', unique: true, nullable: false })
@@ -29,6 +22,7 @@ export class Concert {
   @Column({
     type: 'enum',
     enum: Category,
+    enumName: 'category',
     nullable: false,
   })
   category: Category;

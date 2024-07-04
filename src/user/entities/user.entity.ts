@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  Index,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 import { Role } from '../types/userRole.type';
 
@@ -29,7 +22,7 @@ export class User {
   @Column({ type: 'int', default: 1000000, nullable: false })
   points: number;
 
-  @Column({ type: 'enum', enum: Role, default: Role.User })
+  @Column({ type: 'enum', enum: Role, default: Role.User, enumName: 'role' })
   role: Role;
 
   @CreateDateColumn()
