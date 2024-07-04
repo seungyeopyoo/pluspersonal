@@ -26,12 +26,12 @@ export class CreateConcertDto {
   category: Category;
 
   @IsString()
-  @IsNotEmpty({ message: '공연 장소를 입력해주세요.' })
+  @IsNotEmpty({ message: '장소를 입력해주세요.' })
   location: string;
 
   @IsInt()
   @IsPositive() //양의 정수만 입력가능함
-  @IsNotEmpty({ message: '공연 가격을 입력해주세요.' })
+  @IsNotEmpty({ message: '가격을 입력해주세요.' })
   price: number;
 
   @IsUrl({}, { message: '유효한 이미지 URL을 입력해주세요.' })
