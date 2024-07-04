@@ -1,26 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Concert } from './entities/concert.entity';
 import { CreateConcertDto } from './dto/create-concert.dto';
-import { UpdateConcertDto } from './dto/update-concert.dto';
+import { User } from '../user/entities/user.entity';
+import { Role } from '../user/types/userRole.type';
 
 @Injectable()
 export class ConcertService {
-  create(createConcertDto: CreateConcertDto) {
-    return 'This action adds a new concert';
-  }
+  constructor(
+    @InjectRepository(Concert)
+    private concertRepository: Repository<Concert>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
 
-  findAll() {
-    return `This action returns all concert`;
-  }
+  async createConcert(
+    createConcertDto: CreateConcertDto,
+    adminId: number,
+  ): Promise<Concert> {
+    const adminUser = await this.userRepository.findOneBy({ id: adminId });
 
-  findOne(id: number) {
-    return `This action returns a #${id} concert`;
-  }
+    if (!adminUser || adminUser.role !== Role.Admin) {
+      throw new UnauthorizedException('관리자 권한이 없습니다.');
+    }
 
-  update(id: number, updateConcertDto: UpdateConcertDto) {
-    return `This action updates a #${id} concert`;
-  }
+    const concert = this.concertRepository.create({
+      ...createConcertDto,
+      admin_id: adminId,
+    });
 
-  remove(id: number) {
-    return `This action removes a #${id} concert`;
+    return this.concertRepository.save(concert);
   }
 }
