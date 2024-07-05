@@ -1,8 +1,8 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-
+import { Column, Entity, Index, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Category } from '../types/concertCategory.type';
+import { ConcertDate } from '../../concert_date/entities/concert_date.entity';
 
-@Index('title', ['title'], { unique: true })
+@Index('title', ['title'])
 @Entity({
   name: 'concerts',
 })
@@ -13,7 +13,7 @@ export class Concert {
   @Column({ type: 'int', nullable: false })
   admin_id: number;
 
-  @Column({ type: 'varchar', unique: true, nullable: false })
+  @Column({ type: 'varchar', nullable: false })
   title: string;
 
   @Column({ type: 'varchar', nullable: false })
@@ -36,12 +36,12 @@ export class Concert {
   @Column({ type: 'varchar', nullable: false })
   image: string;
 
-  @Column({ type: 'int', default: 200, nullable: false })
-  seat_count: number;
-
   @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @OneToMany(() => ConcertDate, (concertDate) => concertDate.concert)
+  dates: ConcertDate[]; // ConcertDate 엔티티와 일대다 관계 설정
 }
