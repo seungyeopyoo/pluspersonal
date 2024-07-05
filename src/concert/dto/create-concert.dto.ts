@@ -1,12 +1,7 @@
-import {
-  IsString,
-  IsInt,
-  IsEnum,
-  IsNotEmpty,
-  IsUrl,
-  IsPositive,
-} from 'class-validator';
+import { IsString, IsInt, IsEnum, IsNotEmpty, IsUrl, IsPositive, IsArray, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 import { Category } from '../types/concertCategory.type';
+import { CreateConcertDateDto } from '../../concert_date/dto/create-concert_date.dto';
 
 export class CreateConcertDto {
   @IsInt()
@@ -30,7 +25,7 @@ export class CreateConcertDto {
   location: string;
 
   @IsInt()
-  @IsPositive() //양의 정수만 입력가능함
+  @IsPositive() // 양의 정수만 입력가능함
   @IsNotEmpty({ message: '가격을 입력해주세요.' })
   price: number;
 
@@ -38,8 +33,9 @@ export class CreateConcertDto {
   @IsNotEmpty({ message: '이미지 URL을 입력해주세요.' })
   image: string;
 
-  @IsInt()
-  @IsPositive()
-  @IsNotEmpty({ message: '남은 좌석 수를 입력해주세요.' })
-  seat_count: number;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateConcertDateDto)
+  @IsNotEmpty({ message: '공연 날짜를 입력해주세요.' }) // 공연 날짜 필수 입력
+  dates: CreateConcertDateDto[]; // 공연 날짜 배열
 }

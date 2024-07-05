@@ -1,20 +1,17 @@
 import Joi from 'joi';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-
 import { AuthModule } from './auth/auth.module';
 import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
 import { Concert } from './concert/entities/concert.entity';
 import { ConcertModule } from './concert/concert.module';
+import { ConcertDate } from './concert_date/entities/concert_date.entity';
 
 const typeOrmModuleOptions = {
-  useFactory: async (
-    configService: ConfigService,
-  ): Promise<TypeOrmModuleOptions> => ({
+  useFactory: async (configService: ConfigService): Promise<TypeOrmModuleOptions> => ({
     namingStrategy: new SnakeNamingStrategy(),
     type: 'mysql',
     username: configService.get('DB_USERNAME'),
@@ -22,7 +19,7 @@ const typeOrmModuleOptions = {
     host: configService.get('DB_HOST'),
     port: configService.get('DB_PORT'),
     database: configService.get('DB_NAME'),
-    entities: [User, Concert], // 엔티티는 반드시 여기에 명시!
+    entities: [User, Concert, ConcertDate], // 엔티티는 반드시 여기에 명시!
     synchronize: configService.get('DB_SYNC'),
     logging: true,
   }),
