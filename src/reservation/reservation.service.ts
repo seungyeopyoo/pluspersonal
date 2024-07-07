@@ -75,4 +75,18 @@ export class ReservationService {
 
     return reservation;
   }
+  // 사용자가 예매한 공연 내역을 조회하는 메소드
+  async getUserReservations(userId: number): Promise<Reservation[]> {
+    const reservations = await this.reservationRepository.find({
+      where: { user: { id: userId } },
+      relations: ['concertDate', 'concertDate.concert'],
+      order: { concertDate: { concert_date: 'DESC' } }, // 최신 순으로 정렬
+    });
+
+    if (!reservations.length) {
+      throw new NotFoundException('예매 내역이 없습니다.');
+    }
+
+    return reservations;
+  }
 }
