@@ -1,5 +1,5 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-
+import { Column, Entity, Index, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Reservation } from 'src/reservation/entities/reservation.entity';
 import { Role } from '../types/userRole.type';
 
 @Index('email', ['email'], { unique: true })
@@ -30,4 +30,7 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => Reservation, (reservation) => reservation.user)
+  reservations: Reservation[]; // Reservation 엔티티와 일대다 관계 설정
 }

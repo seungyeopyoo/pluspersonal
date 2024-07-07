@@ -6,8 +6,10 @@ import {
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { Concert } from '../../concert/entities/concert.entity';
+import { Reservation } from '../../reservation/entities/reservation.entity';
 
 @Entity('concert_dates') // 'concert_dates' 테이블에 매핑되는 엔티티
 export class ConcertDate {
@@ -32,4 +34,7 @@ export class ConcertDate {
   @ManyToOne(() => Concert, (concert) => concert.dates)
   @JoinColumn({ name: 'concert_id' }) // 외래 키 설정
   concert: Concert; // Concert 엔티티와 다대일 관계 설정
+
+  @OneToMany(() => Reservation, (reservation) => reservation.concertDate)
+  reservations: Reservation[]; // Reservation 엔티티와 일대다 관계 설정
 }
