@@ -22,4 +22,11 @@ export class ReservationController {
   async getReservationById(@Param('id', ParseIntPipe) id: number): Promise<Reservation> {
     return this.reservationService.getReservationById(id);
   }
+
+  // 사용자가 예매한 공연 내역을 조회하는 엔드포인트
+  @Get()
+  @UseGuards(AuthGuard('jwt'))
+  async getUserReservations(@Req() req): Promise<Reservation[]> {
+    return this.reservationService.getUserReservations(req.user.id);
+  }
 }
