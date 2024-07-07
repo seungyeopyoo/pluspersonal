@@ -28,9 +28,17 @@ export class ReservationService {
     }
 
     // 공연 날짜 찾기
-    const concertDate = await this.concertDateRepository.findOne({ where: { id: concertDateId } });
+    const concertDate = await this.concertDateRepository.findOne({
+      where: { id: concertDateId },
+      relations: ['concert'], // concert 관계를 가져오기 위해 추가
+    });
     if (!concertDate) {
       throw new NotFoundException('공연 날짜를 찾을 수 없습니다.');
+    }
+
+    // 보유 포인트가 공연 가격보다 낮은 경우 예외 발생
+    if (user.points < concertDate.concert.price) {
+      throw new BadRequestException('보유 포인트가 부족합니다.');
     }
 
     // 남은 좌석 수가 부족한 경우 예외 발생
@@ -41,6 +49,10 @@ export class ReservationService {
     // 남은 좌석 수 업데이트
     concertDate.seat_count -= seatCount;
     await this.concertDateRepository.save(concertDate);
+
+    // 포인트 차감
+    user.points -= concertDate.concert.price;
+    await this.userRepository.save(user);
 
     // 새로운 예매 엔티티 생성
     const reservation = this.reservationRepository.create({

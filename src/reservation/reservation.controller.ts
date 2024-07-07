@@ -2,7 +2,7 @@ import { Controller, Post, Get, Body, Param, ParseIntPipe, UseGuards, Req } from
 import { ReservationService } from './reservation.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Reservation } from './entities/reservation.entity';
-import { CreateReservationDto } from './dto/create-reservation.dto'; // DTO 임포트
+import { CreateReservationDto } from './dto/create-reservation.dto';
 
 @Controller('reservation')
 export class ReservationController {
@@ -11,10 +11,7 @@ export class ReservationController {
   // 새로운 예매를 생성하는 엔드포인트
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  async createReservation(
-    @Req() req,
-    @Body() createReservationDto: CreateReservationDto, // DTO 사용
-  ): Promise<Reservation> {
+  async createReservation(@Req() req, @Body() createReservationDto: CreateReservationDto): Promise<Reservation> {
     const { concertDateId, seatCount } = createReservationDto;
     return this.reservationService.createReservation(req.user.id, concertDateId, seatCount);
   }

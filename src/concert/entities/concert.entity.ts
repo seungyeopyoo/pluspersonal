@@ -1,5 +1,6 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Category } from '../types/concertCategory.type';
+import { Location } from '../types/concertLocation.type';
 import { ConcertDate } from '../../concert_date/entities/concert_date.entity';
 
 @Index('title', ['title'])
@@ -27,8 +28,13 @@ export class Concert {
   })
   category: Category;
 
-  @Column({ type: 'varchar', nullable: false })
-  location: string;
+  @Column({
+    type: 'enum',
+    enum: Location,
+    enumName: 'location',
+    nullable: false,
+  })
+  location: Location;
 
   @Column({ type: 'int', default: 30000, nullable: false })
   price: number;

@@ -1,6 +1,7 @@
 import { IsString, IsInt, IsEnum, IsNotEmpty, IsUrl, IsPositive, IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Category } from '../types/concertCategory.type';
+import { Location } from '../types/concertLocation.type';
 import { CreateConcertDateDto } from '../../concert_date/dto/create-concert_date.dto';
 
 export class CreateConcertDto {
@@ -20,9 +21,9 @@ export class CreateConcertDto {
   @IsNotEmpty({ message: '카테고리를 입력해주세요.' })
   category: Category;
 
-  @IsString()
+  @IsEnum(Location, { message: '유효한 장소를 입력해주세요.' }) // 장소 정보 Enum으로 변경
   @IsNotEmpty({ message: '장소를 입력해주세요.' })
-  location: string;
+  location: Location;
 
   @IsInt()
   @IsPositive() // 양의 정수만 입력가능함

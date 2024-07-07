@@ -26,9 +26,7 @@ export class UserService {
     const existingUser = await this.findByEmail(email);
 
     if (existingUser) {
-      throw new ConflictException(
-        '이미 해당 이메일로 가입된 사용자가 있습니다!',
-      );
+      throw new ConflictException('이미 해당 이메일로 가입된 사용자가 있습니다!');
     }
     if (password !== passwordConfirm) {
       throw new BadRequestException('비밀번호가 일치하지 않습니다 ㅠ ');
@@ -60,7 +58,11 @@ export class UserService {
     // 닉네임과 포인트를 반환
     return {
       nickname: user.nickname,
+      email: user.email,
+      role: user.role,
       points: user.points,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     };
   }
 
