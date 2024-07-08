@@ -1,73 +1,107 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 공연을 예매 웹 사이트 구현
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+- [배포 웹사이트 링크](https://www.yooseungyeop.shop/)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- [API 명세서](https://www.notion.so/Plus-API-2a99dee8f1c44ee48aae0b8ad02ca359)
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
+- [ERD](https://drawsql.app/teams/ysy-1/diagrams/pluspersonal)
+***
+  
+## 📢 개요
+- 목표: 타입스크립트를 이용하여 온라인 공연 예매 서비스를 구현
+- Nest.js 환경에서 필수 기능 구현
+- 서비스를 개발하면서 타입스크립트의 특징을 최대한 활용
+- 모든 데이터 구조와 함수에는 적절한 타입 정의를 적용
+- 에러 처리는 적절하게
+ 
+  ![화면 캡처 2024-07-08 102931](https://github.com/seungyeopyoo/node-shimhwa/assets/166491440/cb1f5ded-1343-4aa2-908e-9ea996aa4b49)
+  
+***
+### 폴더 구조
+```markdown
+src
+ ┣ auth
+ ┃ ┣ auth.controller.spec.ts
+ ┃ ┣ auth.controller.ts
+ ┃ ┣ auth.module.ts
+ ┃ ┗ jwt.strategy.ts
+ ┣ concert
+ ┃ ┣ dto
+ ┃ ┃ ┣ create-concert.dto.ts
+ ┃ ┃ ┗ get-concert.dto.ts
+ ┃ ┣ entities
+ ┃ ┃ ┗ concert.entity.ts
+ ┃ ┣ types
+ ┃ ┃ ┣ concertCategory.type.ts
+ ┃ ┃ ┗ concertLocation.type.ts
+ ┃ ┣ concert.controller.spec.ts
+ ┃ ┣ concert.controller.ts
+ ┃ ┣ concert.module.ts
+ ┃ ┣ concert.service.spec.ts
+ ┃ ┗ concert.service.ts
+ ┣ concert_date
+ ┃ ┣ dto
+ ┃ ┃ ┣ create-concert_date.dto.ts
+ ┃ ┃ ┗ update-concert_date.dto.ts
+ ┃ ┣ entities
+ ┃ ┃ ┗ concert_date.entity.ts
+ ┃ ┣ concert_date.controller.spec.ts
+ ┃ ┣ concert_date.controller.ts
+ ┃ ┣ concert_date.module.ts
+ ┃ ┣ concert_date.service.spec.ts
+ ┃ ┗ concert_date.service.ts
+ ┣ reservation
+ ┃ ┣ dto
+ ┃ ┃ ┣ create-reservation.dto.ts
+ ┃ ┃ ┗ update-reservation.dto.ts
+ ┃ ┣ entities
+ ┃ ┃ ┗ reservation.entity.ts
+ ┃ ┣ reservation.controller.spec.ts
+ ┃ ┣ reservation.controller.ts
+ ┃ ┣ reservation.module.ts
+ ┃ ┣ reservation.service.spec.ts
+ ┃ ┗ reservation.service.ts
+ ┣ user
+ ┃ ┣ dto
+ ┃ ┃ ┣ create-user.dto.ts
+ ┃ ┃ ┗ login.dto.ts
+ ┃ ┣ entities
+ ┃ ┃ ┗ user.entity.ts
+ ┃ ┣ types
+ ┃ ┃ ┗ userRole.type.ts
+ ┃ ┣ user.controller.spec.ts
+ ┃ ┣ user.controller.ts
+ ┃ ┣ user.module.ts
+ ┃ ┣ user.service.spec.ts
+ ┃ ┗ user.service.ts
+ ┣ utils
+ ┃ ┗ userInfo.decorator.ts
+ ┣ app.controller.spec.ts
+ ┣ app.controller.ts
+ ┣ app.module.ts
+ ┣ app.service.ts
+ ┗ main.ts
+.env
+.eslintrc.js
+.gitignore
+.prettierrc
+package-lock.json
+package.json
+nest-cli.json
+tsconfig.build.json
+tsconfig.json
+README.md
 ```
+***
 
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+## ✨ 사용 기술
+  ![TypeScript](https://img.shields.io/badge/TypeScript-000000?style=for-the-badge&logo=TypeScript&logoColor=blue)
+  ![Nest.js](https://img.shields.io/badge/Nest.Js-000000?style=for-the-badge&logo=Nestjs&logoColor=red)
+  ![TypeORM](https://img.shields.io/badge/TypeORM-000000?style=for-the-badge&logo=TYPEORM&logoColor=orange)
+  ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
+  ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+  
+## 📃 참고 자료 
+- [Nest.js Docs](https://docs.nestjs.com/) 
+- [TypeScript handbook](https://joshua1988.github.io/ts/intro.html)
+***
